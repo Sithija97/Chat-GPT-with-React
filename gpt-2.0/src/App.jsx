@@ -8,11 +8,17 @@ function App() {
     <div className="App">
       <aside className="side-menu">
         <div className="side-menu-button">
-          <span>+</span>
+          <span>
+            <b>+</b>
+          </span>
           New Chat
         </div>
       </aside>
-      <section className="chatbox"></section>
+      <section className="chatbox">
+        <div className="chat-input-holder">
+          <textarea rows={1} className="chat-input-textarea"></textarea>
+        </div>
+      </section>
     </div>
   );
 }
