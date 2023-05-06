@@ -1,13 +1,11 @@
 import { useState } from "react";
-import "./App.css";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline text-indigo-600">
-        Hello world!
-      </h1>
-    </>
+    <main className="w-full h-screen flex items-center justify-center">
+      <Chat />
+    </main>
   );
 }
 
