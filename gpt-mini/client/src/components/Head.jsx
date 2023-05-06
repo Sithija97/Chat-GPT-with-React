@@ -17,7 +17,7 @@ const Head = () => {
       <div className="bg-[#1a4fe2] flex items-center justify-center p-4 rounded-2xl">
         <Logo className="w-8 h-8" />
       </div>
-      <span className="text-white ml-4 text-lg">Chatbot</span>
+      <span className="text-white ml-4 text-lg">Chat GPT Mini</span>
     </div>
   );
 };
