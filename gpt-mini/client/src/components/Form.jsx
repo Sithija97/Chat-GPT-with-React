@@ -7,7 +7,7 @@ const SendIcon = (props) => (
   </svg>
 );
 
-const Form = () => {
+const Form = ({ setMessages }) => {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
@@ -15,7 +15,15 @@ const Form = () => {
     setMessage(value);
   };
 
-  const sendMessage = () => {};
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (!message) return;
+
+    setMessages((prev) => [
+      ...prev,
+      { msg: message, type: "user", time: "8.46am" },
+    ]);
+  };
 
   return (
     <div className="relative">

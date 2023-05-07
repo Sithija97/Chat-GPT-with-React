@@ -26,12 +26,13 @@ const Message = ({ msg, type, time }) => {
 const Messages = ({ messages }) => {
   return (
     <div className="w-[600px] max-h-96 overflow-y-scroll scrollbar-hide">
-      {messages.map((message, index) => (
-        <Message key={index} {...message} />
-      ))}
+      {messages.length ? (
+        messages.map((message, index) => <Message key={index} {...message} />)
+      ) : (
+        <p>ask from bot..</p>
+      )}
     </div>
   );
 };
 
 export default Messages;
-// #436fe9c0
