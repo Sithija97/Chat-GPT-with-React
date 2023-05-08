@@ -1,8 +1,12 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 const Message = ({ msg, type, time }) => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       className={`flex items-center ${
         type === "bot" ? "justify-start" : "justify-end"
       }`}
@@ -19,18 +23,27 @@ const Message = ({ msg, type, time }) => {
           {time}
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const Messages = ({ messages }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBottom, [messages]);
+
   return (
-    <div className="w-[600px] max-h-96 overflow-y-scroll scrollbar-hide">
+    <div className="w-[600px] max-h-96 overflow-y-scroll scrollbar-hide space-y-4">
       {messages.length ? (
         messages.map((message, index) => <Message key={index} {...message} />)
       ) : (
-        <p>ask from bot..</p>
+        <p className="text-slate-500">ask anything from bot..</p>
       )}
+      <div ref={messagesEndRef} />
     </div>
   );
 };

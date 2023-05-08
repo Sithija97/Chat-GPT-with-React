@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
+import { formatRelative } from "date-fns";
 
 const SendIcon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
@@ -15,14 +17,35 @@ const Form = ({ setMessages }) => {
     setMessage(value);
   };
 
-  const sendMessage = (e) => {
+  const messageResponse = async () => {
+    const { data } = await axios.post(`http://localhost:8000/test`, {
+      message,
+    });
+    setMessages((prev) => [
+      ...prev,
+      {
+        msg: data,
+        type: "bot",
+        time: formatRelative(new Date(), new Date()),
+      },
+    ]);
+  };
+
+  const sendMessage = async (e) => {
     e.preventDefault();
     if (!message) return;
 
     setMessages((prev) => [
       ...prev,
-      { msg: message, type: "user", time: "8.46am" },
+      {
+        msg: message,
+        type: "user",
+        time: formatRelative(new Date(), new Date()),
+      },
     ]);
+
+    setMessage("");
+    await messageResponse();
   };
 
   return (

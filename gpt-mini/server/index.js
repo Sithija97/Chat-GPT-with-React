@@ -30,7 +30,7 @@ app.post("/test", async (req, res) => {
     model: "text-davinci-003",
     prompt: `${req.body.message}`,
     temperature: 0,
-    max_tokens: 100,
+    max_tokens: 1400,
   });
 
   const responseData = response.data.choices[0].text;

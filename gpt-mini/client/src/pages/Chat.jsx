@@ -4,10 +4,7 @@ import Messages from "../components/Messages";
 import Form from "../components/Form";
 
 const Chat = () => {
-  const [messages, setMessages] = useState([
-    { msg: "hi bot", type: "user", time: "10.46am" },
-    { msg: "hi, how may I help you?", type: "bot", time: "10.46am" },
-  ]);
+  const [messages, setMessages] = useState([]);
   return (
     <div className="p-2">
       <div className="bg-[#2F343C] rounded-3xl p-12">
