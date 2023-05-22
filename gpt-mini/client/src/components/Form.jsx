@@ -11,6 +11,7 @@ const SendIcon = (props) => (
 
 const Form = ({ setMessages }) => {
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -18,7 +19,7 @@ const Form = ({ setMessages }) => {
   };
 
   const messageResponse = async () => {
-    const { data } = await axios.post(`http://localhost:8000/test`, {
+    const { data } = await axios.post(`http://localhost:8000/prompt`, {
       message,
     });
     setMessages((prev) => [
@@ -45,7 +46,9 @@ const Form = ({ setMessages }) => {
     ]);
 
     setMessage("");
+    setIsLoading(true);
     await messageResponse();
+    setIsLoading(false);
   };
 
   return (
@@ -63,7 +66,11 @@ const Form = ({ setMessages }) => {
           onClick={sendMessage}
           className="bg-[#3A3F47] hover:opacity-50 active:opacity-100 text-white text-sm px-4 py-2 rounded-xl absolute top-1 right-0"
         >
-          <SendIcon className="w-5 h-5 fill-[#2576f8]" />
+          {isLoading ? (
+            <p>loading..</p>
+          ) : (
+            <SendIcon className="w-5 h-5 fill-[#2576f8]" />
+          )}
         </button>
       </form>
     </div>

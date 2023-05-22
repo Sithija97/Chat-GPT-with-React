@@ -25,7 +25,7 @@ app.post("/hello", (req, res) => {
   res.status(200).send(req.body);
 });
 
-app.post("/test", async (req, res) => {
+app.post("/prompt", async (req, res) => {
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: `${req.body.message}`,
