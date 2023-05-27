@@ -1,18 +1,65 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { send, user, bot, loadingIcon } from "./assets/index";
 
 function App() {
   const [prompt, setPrompt] = useState("");
   const [posts, setPosts] = useState([]);
 
+  useEffect(() => {
+    document.querySelector(".layout").scrollTop =
+      document.querySelector(".layout").scrollHeight;
+  }, [posts]);
+
+  const fetchResponseFromOpenAI = async () => {
+    const { data } = await axios.post("http://localhost:8000", { prompt });
+    return data;
+  };
+
   const onSubmit = () => {
     if (prompt.trim() === "") return;
     updatePosts(prompt);
+    updatePosts("loading...", false, true);
     setPrompt("");
+    fetchResponseFromOpenAI().then((res) => {
+      updatePosts(res.bot.trim(), true);
+    });
   };
 
-  const updatePosts = (post) => {
-    setPosts([...posts, { type: "user", post }]);
+  const autoTypingBotResponse = (response) => {
+    let index = 0;
+    let interval = setInterval(() => {
+      if (index < response.length) {
+        setPosts((prevState) => {
+          let lastItem = prevState.pop();
+          if (lastItem.type !== "bot") {
+            prevState.push({
+              type: "bot",
+              post: response.charAt(index - 1),
+            });
+          } else {
+            prevState.push({
+              type: "bot",
+              post: lastItem.post + response.charAt(index - 1),
+            });
+          }
+          return [...prevState];
+        });
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 30);
+  };
+
+  const updatePosts = (post, isBot, isLading) => {
+    if (isBot) {
+      autoTypingBotResponse(post);
+    } else {
+      setPosts((prevState) => {
+        return [...prevState, { type: isLading ? "loading" : "user", post }];
+      });
+    }
   };
 
   const onKeyUp = (e) => {
