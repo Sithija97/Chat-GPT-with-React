@@ -5,7 +5,6 @@ import { send, user, bot, loadingIcon } from "./assets/index";
 function App() {
   const [prompt, setPrompt] = useState("");
   const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     document.querySelector(".layout").scrollTop =
@@ -14,17 +13,33 @@ function App() {
 
   const fetchResponseFromOpenAI = async () => {
     const { data } = await axios.post("http://localhost:8000/", { prompt });
-    setPosts((prev) => {
-      const updatedPosts = [...prev];
-      updatedPosts.pop();
-      return [
-        ...updatedPosts,
-        {
-          type: "bot",
-          post: data.bot?.trim(),
-        },
-      ];
-    });
+    autoTypingBotResponse(data.bot?.trim());
+  };
+
+  const autoTypingBotResponse = (response) => {
+    let index = 0;
+    let interval = setInterval(() => {
+      if (index < response.length) {
+        setPosts((prevState) => {
+          let lastItem = prevState.pop();
+          if (lastItem.type !== "bot") {
+            prevState.push({
+              type: "bot",
+              post: response.charAt(index - 1),
+            });
+          } else {
+            prevState.push({
+              type: "bot",
+              post: lastItem.post + response.charAt(index - 1),
+            });
+          }
+          return [...prevState];
+        });
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 30);
   };
 
   const handleSubmit = async () => {
