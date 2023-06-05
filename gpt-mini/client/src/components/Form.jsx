@@ -19,7 +19,7 @@ const Form = ({ setMessages }) => {
   };
 
   const messageResponse = async () => {
-    const { data } = await axios.post(`http://localhost:8000/prompt`, {
+    const { data } = await axios.post(`http://localhost:9000/prompt`, {
       message,
     });
     setMessages((prev) => [
