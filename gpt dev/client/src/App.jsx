@@ -14,14 +14,17 @@ function App() {
 
   const fetchResponseFromOpenAI = async () => {
     const { data } = await axios.post("http://localhost:8000/", { prompt });
-    console.log(data);
-    setPosts((prev) => [
-      ...prev,
-      {
-        type: "bot",
-        post: data.bot,
-      },
-    ]);
+    setPosts((prev) => {
+      const updatedPosts = [...prev];
+      updatedPosts.pop();
+      return [
+        ...updatedPosts,
+        {
+          type: "bot",
+          post: data.bot?.trim(),
+        },
+      ];
+    });
   };
 
   const handleSubmit = async () => {
@@ -36,9 +39,14 @@ function App() {
     ]);
 
     setPrompt("");
-    setIsLoading(true);
+    setPosts((prev) => [
+      ...prev,
+      {
+        type: "loading",
+        post: "",
+      },
+    ]);
     await fetchResponseFromOpenAI();
-    setIsLoading(false);
   };
 
   const onKeyUp = (e) => {
@@ -54,19 +62,25 @@ function App() {
           {posts.map((post, idx) => (
             <div
               key={idx}
-              className={`chat-bubble ${post.type === "bot" ? "bot" : ""}`}
+              className={`chat-bubble ${
+                post.type === "bot" || post.type === "loading" ? "bot" : ""
+              }`}
             >
               <div className="avatar">
-                <img src={post.type === "bot" ? bot : user} alt="" />
+                <img
+                  src={
+                    post.type === "bot" || post.type === "loading" ? bot : user
+                  }
+                  alt=""
+                />
               </div>
-              {/* {isLoading ? (
+              {post.type === "loading" ? (
                 <div className="loader">
                   <img src={loadingIcon} alt="" />
                 </div>
               ) : (
                 <div className="post">{post.post}</div>
-              )} */}
-              <div className="post">{post.post}</div>
+              )}
             </div>
           ))}
         </div>
