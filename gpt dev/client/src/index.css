@@ -65,9 +65,13 @@ footer {
   width: 20px;
   margin-right: -5px;
 }
+.dark-mode-button {
+  float: right;
+}
 .chat-container {
   height: calc(100vh - 80px);
-  padding: 20px 0;
+  padding: 40px 0 20px 0;
+  /* padding: 20px 0; */
 }
 .layout {
   width: 100%;

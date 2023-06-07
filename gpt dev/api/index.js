@@ -20,10 +20,6 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.post("/test", async (req, res) => {
-  console.log(req.body.prompt);
-});
-
 app.post("/", async (req, res) => {
   try {
     const response = await openai.createCompletion({

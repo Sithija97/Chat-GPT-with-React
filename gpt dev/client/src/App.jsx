@@ -72,6 +72,7 @@ function App() {
 
   return (
     <main className="chatGPT-app">
+      <button className="dark-mode-button">dark mode</button>
       <section className="chat-container">
         <div className="layout">
           {posts.map((post, idx) => (
